@@ -1,0 +1,39 @@
+- hosts: localhost
+  tasks:
+    - name: "Creation of an Instance on AWS cloud for Haproxy"
+      ec2_instance:
+        region: ap-south-1
+        image_id: ami-06a0b4e3b7eb7a300
+        instance_type: t2.micro
+        vpc_subnet_id: subnet-3c161654
+        name: "Haproxy"
+        security_group: sg-5481df31
+        key_name: docker1
+        state: present
+        aws_access_key: <put your access key by creating on aws IAM>
+        aws_secret_key: <put secret key>
+
+    - name: "Creation of Instance on AWS cloud for Web-Server1"
+      ec2_instance:
+        region: ap-south-1
+        image_id: ami-06a0b4e3b7eb7a300
+        instance_type: t2.micro
+        vpc_subnet_id: subnet-3c161654
+        name: "WebServer-1"
+        security_group: sg-5481df31
+        key_name: docker1
+        state: present
+        aws_access_key: <put your access key by creating on aws IAM>
+        aws_secret_key: <put secret key>
+    - name: "Creation of an Instance on AWS cloud for WebServer2"
+      ec2_instance:
+        region: ap-south-1
+        image_id: ami-06a0b4e3b7eb7a300
+        instance_type: t2.micro
+        vpc_subnet_id: subnet-3c161654
+        name: "WebServer-2"
+        security_group: sg-5481df31
+        key_name: docker1
+        state: present
+        aws_access_key: <put your access key by creating on aws IAM>
+        aws_secret_key: <put secret key>
