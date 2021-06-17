@@ -1,6 +1,6 @@
  - hosts : all
    vars_files :
-           - "redhat1.yml"
+     - "{{ ansible_facts['distribution'] }}.yml"
 
    tasks:
      - name: SETTING UP WEBSERVER
