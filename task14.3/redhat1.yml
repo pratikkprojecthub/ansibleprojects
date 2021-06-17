@@ -1,1 +1,3 @@
 software: httpd
+doc_root: /var/www/html
+service: httpd
