@@ -1,0 +1,20 @@
+ - hosts : all
+   vars_files :
+           - "redhat1.yml"
+
+   tasks:
+     - name: SETTING UP WEBSERVER
+       package:
+          name: "{{ software}}"
+          state : present
+
+     - name: Copying the content for the task
+       template:
+          dest: "{{ doc_root }}"
+          src: index.html
+
+     - name: Starting the service
+       service:
+          name: "{{ service }}"
+          state: started
+
