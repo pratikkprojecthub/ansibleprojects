@@ -1,6 +1,6 @@
 - hosts: localhost
   vars_prompt:
-          - name: containern
+          - name: container
             prompt: "Container Name"
             private: no
 
