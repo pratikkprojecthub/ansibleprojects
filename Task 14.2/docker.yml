@@ -1,0 +1,62 @@
+- hosts: localhost
+  vars_prompt:
+          - name: containern
+            prompt: "Container Name"
+            private: no
+
+  tasks:
+          - name: Creating Docker Repository
+            yum_repository:
+                    name: docker
+                    baseurl: https://download.docker.com/linux/centos/7/x86_64/stable
+                    gpgcheck: no
+                    description: Docker Repo
+
+          - name: install docker
+            command: "docker"
+            register: d_s
+            failed_when: false
+
+          - name: Installing Docker
+            command: yum install docker-ce -y --nobest
+            when: d_s.rc != 0
+            args:
+                    warn: no
+
+          - name: Starting Docker
+            service:
+                    name: docker
+                    state: started
+
+          - name: Installing file for ansible and docker integration
+            pip:
+                    name: docker-py
+                    state: present
+
+          - name: Pull httpd image
+            docker_image:
+                    name: httpd
+                    source: pull
+
+          - name: copy webpage
+            copy:
+                    src: index.html
+                    dest: /var/www/html/index.html
+
+          - name: Start httpd Container
+            docker_container:
+                    name : "{{ container }}"
+                    image: httpd
+                    state: started
+                    volumes: "/var/www/html/:/usr/local/apache2/htdocs/"
+                    published_ports:
+                            - 7000:81
+            register: docker_info
+
+          - debug:
+                  var: docker_info.container.NetworkSettings.IPAddress
+
+          - name: "Updating in inventory"
+            template:
+                    src: "main.txt"
+                    dest: "/root/main.txt"
